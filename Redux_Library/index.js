@@ -1,46 +1,48 @@
-//Importing redux
-const redux = require('@reduxjs/toolkit')
-console.log("Gello")
+const redux = require("@reduxjs/toolkit");
 
-//Creating actions
-//Action is a object with type property
-function orderCake(){
-    return{
-        type:'CAKE_ORDERED',
-        quantity:1
-    }
+//Actions
+const INCREMENT = "INCREMENT";
+const DECREMENT = "DECREMENT";
+
+//Functions
+function click(action) {
+  return {
+    type: action,
+  };
 }
 
-//Initial State which is always a object
-const initialState = {
-    counter:10
+//Initial State
+const intitalState = {
+  counter: 10,
 }
 
+//reducer function
+const reducer = (state = intitalState, action) => {
+  switch (action.type) {
+    case "INCREMENT":
+      return {
+        ...state,
+        counter: state.counter + 1,
+      };
+    case "DECREMENT":
+      return {
+        ...state,
+        counter: state.counter - 1,
+    };
+    default:
+        return state
+  }
+};
 
-//Reducer function
-//(previousState, action) => newState
-
-const reducer = (state = initialState, action) => {
-    switch(action.type){
-        case 'CAKE_ORDERED':
-            return {
-                ...state,
-                counter:state.counter - 1
-            }
-        default:
-            return state
-    }
-}
-
+//Configuring the store
 const store = redux.configureStore({reducer})
-console.log('Inital State ' + store.getState().counter)
+console.log('Initial State ',  store.getState())
 
-store.subscribe(() => console.log('Update State ', store.getState()))
+store.subscribe(() => console.log('Updated State ', store.getState()))
 
-store.dispatch(orderCake())
-store.dispatch(orderCake())
-store.dispatch(orderCake())
-
-// unsubcribed()
+store.dispatch(click(INCREMENT))
+store.dispatch(click(INCREMENT))
+store.dispatch(click(INCREMENT))
+store.dispatch(click(DECREMENT))
 
 
