@@ -2,7 +2,7 @@ const redux = require("@reduxjs/toolkit");
 
 //This will help in binding the all the actions related to store and it will dispatch automatically without using dispatcher function
 const bindActionCreators = redux.bindActionCreators;
-const {combineReducers} = redux
+const { combineReducers } = redux;
 
 //Action type
 const CAKE_ORDERD = "CAKE_ORDERED";
@@ -97,11 +97,12 @@ const IceCreamReducer = (shop = initialIceCreamState, action) => {
 
 //Setting redux
 const reducer = combineReducers({
-    cake:Cakereducer,
-    iceCream:IceCreamReducer
-})
+  cake: Cakereducer,
+  iceCream: IceCreamReducer,
+});
 
-const store = redux.configureStore({reducer})
+//You need to pass reducer as object name, no other name is accepted
+const store = redux.configureStore({ reducer });
 
 console.log("Currently Number of cakes: ", store.getState());
 
