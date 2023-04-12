@@ -1,67 +1,54 @@
+//Importing redux
 const redux = require("@reduxjs/toolkit");
-
-//This will help in binding the all the actions related to store and it will dispatch automatically without using dispatcher function
 const bindActionCreators = redux.bindActionCreators;
-const { combineReducers } = redux;
+const combineReducers = redux.combineReducers;
 
-//Action type
-const CAKE_ORDERD = "CAKE_ORDERED";
-const CAKE_RESTOCK = "CAKE_RESTOCK";
-const ICE_ORDERED = "ICECREAM_ORDERED";
-const ICE_RESTOCK = "ICECREAM_RESTOCKED";
+//Creating action
+const CAKE_ORDERD = "CAKEORDERED";
+const CAKE_RESTOCK = "CAKERESTOCK";
+const ICE_ORDERED = "ICECREAMORDER";
+const ICE_RESTOCK = "ICECREAMRESTOCK";
 
-function orderCake() {
+//Creating function
+const orderCake = () => {
   return {
     type: CAKE_ORDERD,
+    payload: 1,
   };
-}
+};
 
-function restock() {
+const restockCake = (qty = 1) => {
   return {
     type: CAKE_RESTOCK,
-    payload: 5,
-  };
-}
-
-function orderIcecream(qty = 1) {
-  return {
-    type: ICE_ORDERED,
     payload: qty,
   };
-}
+};
 
-function restockIcecream(qty = 1) {
+const orderIcecream = () => {
+  return {
+    type: ICE_ORDERED,
+    payload: 1,
+  };
+};
+
+const restockIcecream = (qty = 1) => {
   return {
     type: ICE_RESTOCK,
     payload: qty,
   };
-}
+};
 
-//Creating a action which will take a arguement
-function restock(count = 0) {
-  return {
-    type: CAKE_RESTOCK,
-    payload: count,
-  };
-}
-
-//Initial State
-// const initialState = {
-//   numberOfCakes: 10,
-//   numberOfIcecream: 10,
-// };
-
-//Creating seperate cake and ice-cream states
-const initialCakeState = {
+//Creating 2 seperate initial state
+const cakeInitialState = {
   numberOfCakes: 10,
 };
 
-const initialIceCreamState = {
-  numberOfIcecream: 10,
+const iceCreamInitialState = {
+  numberOfIceCream: 10,
 };
 
-//Reducer function which is generally the store
-const Cakereducer = (shop = initialCakeState, action) => {
+//Creating 2 seperate Reducers
+const cakeReducer = (shop = cakeInitialState, action) => {
   switch (action.type) {
     case CAKE_ORDERD:
       return {
@@ -74,51 +61,44 @@ const Cakereducer = (shop = initialCakeState, action) => {
         numberOfCakes: shop.numberOfCakes + action.payload,
       };
     default:
-      return shop;
+      return shop
   }
 };
 
-const IceCreamReducer = (shop = initialIceCreamState, action) => {
+const iceCreamReducer = (shop = iceCreamInitialState, action) => {
   switch (action.type) {
     case ICE_ORDERED:
       return {
         ...shop,
-        numberOfIcecream: shop.numberOfIcecream - action.payload,
+        numberOfIceCream: shop.numberOfIceCream - 1,
       };
     case ICE_RESTOCK:
       return {
         ...shop,
-        numberOfIcecream: shop.numberOfIcecream + action.payload,
+        numberOfIceCream: shop.numberOfIceCream + action.payload,
       };
     default:
-      return shop;
+      return shop
   }
 };
 
-//Setting redux
+//Using combine reducer:
 const reducer = combineReducers({
-  cake: Cakereducer,
-  iceCream: IceCreamReducer,
-});
+  cake:cakeReducer,
+  iceCream:iceCreamReducer
+})
 
-//You need to pass reducer as object name, no other name is accepted
-const store = redux.configureStore({ reducer });
+const store = redux.configureStore({reducer})
+console.log('Initial State: ', store.getState())
+store.subscribe(() => console.log('Updated states: ', store.getState()))
 
-console.log("Currently Number of cakes: ", store.getState());
+const action = bindActionCreators({orderCake,restockCake,orderIcecream,restockIcecream},store.dispatch)
 
-store.subscribe(() => {
-  console.log("Now cakes left are: ", store.getState());
-});
+action.orderCake()
+action.orderIcecream()
+action.restockCake(5)
+action.restockIcecream(5)
+action.orderCake()
+action.orderCake()
+action.orderCake()
 
-//This is how bind action works
-const action = bindActionCreators(
-  { restock, orderCake, orderIcecream, restockIcecream },
-  store.dispatch
-);
-
-action.orderCake();
-action.orderCake();
-action.restock();
-action.orderCake();
-action.orderIcecream(6);
-action.restock(3);
