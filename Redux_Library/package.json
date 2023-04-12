@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
     "immer": "^9.0.21",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "redux-logger": "^3.0.6"
   }
 }
