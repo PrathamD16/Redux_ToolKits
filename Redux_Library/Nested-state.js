@@ -1,4 +1,9 @@
+//To update nested states, we constantly need to update objects by spreading it.
+
+//Immer helps to update the state directly without spreading the object. It updates the object like, the object is mutable
+
 const redux = require('@reduxjs/toolkit')
+const produce = require('immer').produce
 
 const initialState = {
   name: 'Pratham',
@@ -21,13 +26,16 @@ const updateStreet = (street) => {
 const reducer = (state = initialState, action) => {
   switch(action.type){
     case STREET_UPDATED:
-      return {
-        ...state,
-        address:{
-          ...state.address,
-          street:action.payload
-        }
-      }
+    //   return {
+    //     ...state,
+    //     address:{
+    //       ...state.address,
+    //       street:action.payload
+    //     }
+    //   }
+    return produce(state,(draft) => {
+        draft.address.street = action.payload
+    })
     default:
       return state
   }
