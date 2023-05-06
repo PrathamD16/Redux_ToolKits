@@ -1,5 +1,6 @@
 const cakeReducer = require("../Feature/cake/caksSlice");
 const iceCreamReducer = require("../Feature/icecream/iceCreamSlice");
+const userReducer = require('../Feature/user/userSlice')
 
 const reduxLogger = require("redux-logger");  //setting logger
 
@@ -11,6 +12,7 @@ const store = configureStore({
   reducer: {
     cake: cakeReducer,
     iceCream: iceCreamReducer,
+    user:userReducer,
   },
   
   // middleware: (getDefaultMiddleWare) => getDefaultMiddleWare().concat(logger),
